@@ -1,5 +1,4 @@
 import net.datafaker.Faker;
-import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,8 +18,6 @@ public class ProductList implements Page {
     @FindBy(className = "dropdown-item") List<WebElement> menu;
 
     @FindBy(tagName = "tr") List<WebElement> elements;
-
-    @FindBy(tagName = "td") List<WebElement> td;
 
     @FindBy(xpath = "//div[contains(@class, 'btn')]/child::button")
     WebElement btnAdd;
@@ -87,9 +84,6 @@ public class ProductList implements Page {
             this.isExotic = description.contains("true");
         }
 
-        public ProductInfo() {
-        }
-
         // для объекта по запросу SQL
         public ProductInfo(String name, String isFruit, int isExotic) {
             this.name = name;
@@ -97,26 +91,15 @@ public class ProductList implements Page {
             if (isExotic == 1) this.isExotic = true;
         }
 
-        public ProductInfo(String name, boolean isFruit, boolean isExotic) {
-            this.name = name;
-            this.isFruit = isFruit;
-            this.isExotic = isExotic;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setFruit(String fruit) {
-            this.isFruit = fruit.equals("FRUIT");
-        }
-
-        public void setExotic(int exotic) {
-            if (exotic == 1) this.isExotic = true;
-        }
     }
 
     public String getLastProduct() {
         return elements.get(elements.size() - 1).getText();
+    }
+
+    public ProductList dataReset() {
+        dropDown.click();
+        menu.get(menu.size() - 1).click();
+        return this;
     }
 }

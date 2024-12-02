@@ -1,11 +1,10 @@
 import java.sql.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class JDBC {
     private static final String count = "SELECT COUNT(FOOD_NAME) AS NAME FROM FOOD WHERE FOOD_NAME = ?";
     private static final String foodInfo = "SELECT * FROM FOOD WHERE FOOD_NAME = ?";
-    Connection connection;
+    private static final String deleteString = "DELETE FROM FOOD WHERE FOOD_NAME = ?";
+    private static Connection connection;
 
     public static int countFoodName(String foodName) throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:h2:tcp://localhost:9092/mem:testdb",
@@ -34,4 +33,13 @@ public class JDBC {
         return productInfo;
     }
 
+    public static int resetDB(String name) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:h2:tcp://localhost:9092/mem:testdb",
+                "user", "pass");
+        PreparedStatement statement = connection.prepareStatement(deleteString);
+        statement.setString(1, name);
+        int count = statement.executeUpdate();
+        connection.close();
+        return count;
+    }
 }

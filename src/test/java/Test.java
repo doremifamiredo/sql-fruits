@@ -22,6 +22,7 @@ public class Test {
         productList.addProduct(expected);
         driver.navigate().refresh();
         ProductList.ProductInfo actual = new ProductList.ProductInfo(productList.getLastProduct());
+        productList.dataReset();
         assertAll(() -> assertEquals(expected.name, actual.name),
                 () -> assertEquals(expected.isFruit, actual.isFruit),
                 () -> assertEquals(expected.isExotic, actual.isExotic));
@@ -37,7 +38,8 @@ public class Test {
         ProductList.ProductInfo actual = JDBC.getProductInfoFromDB(expected.name);
         assertAll(() -> assertEquals(expected.name, actual.name),
                 () -> assertEquals(expected.isFruit, actual.isFruit),
-                () -> assertEquals(expected.isExotic, actual.isExotic));
+                () -> assertEquals(expected.isExotic, actual.isExotic),
+                () -> assertEquals(1, JDBC.resetDB(expected.name)));
     }
 
     ProductList productList = new ProductList();
